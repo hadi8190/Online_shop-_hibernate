@@ -1,0 +1,88 @@
+create table if not exists public.cart
+(
+    id    serial
+        primary key,
+    count integer
+);
+
+alter table public.cart
+    owner to postgres;
+
+create table if not exists public.fish
+(
+    id          serial
+        primary key,
+    confirm     varchar(255) default 'No'::character varying,
+    total_price integer
+);
+
+alter table public.fish
+    owner to postgres;
+
+create table if not exists public.product
+(
+    id          serial
+        primary key,
+    barcode     integer,
+    code        integer,
+    count       integer,
+    description varchar(255),
+    name        varchar(255),
+    price       integer
+);
+
+alter table public.product
+    owner to postgres;
+
+create table if not exists public.cart_product
+(
+    product_id integer not null
+        constraint fk2kdlr8hs2bwl14u8oop49vrxi
+            references public.product,
+    cart_id    integer not null
+        constraint fklv5x4iresnv4xspvomrwd8ej9
+            references public.cart
+);
+
+alter table public.cart_product
+    owner to postgres;
+
+create table if not exists public.user_account
+(
+    id            serial
+        primary key,
+    national_code varchar(255),
+    username      varchar(255)
+);
+
+alter table public.user_account
+    owner to postgres;
+
+create table if not exists public.useraccount_cart
+(
+    user_id integer
+        constraint fkhvv9ql51e8in7i5u31wuh2vi8
+            references public.user_account,
+    cart_id integer not null
+        primary key
+        constraint fkeitihevxkfd3sdxl3kasuapb
+            references public.cart
+);
+
+alter table public.useraccount_cart
+    owner to postgres;
+
+create table if not exists public.useraccount_fish
+(
+    user_account integer
+        constraint fkj7o0ysd4x8gcpktal80hwi6o6
+            references public.user_account,
+    fish_id      integer not null
+        primary key
+        constraint fk7h28muxxiqnkyu5te6iydahin
+            references public.fish
+);
+
+alter table public.useraccount_fish
+    owner to postgres;
+
